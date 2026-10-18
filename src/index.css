@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-dark-950 text-white font-body antialiased;
+    font-size: 16px;
+  }
+
+  ::selection {
+    @apply bg-gold/20 text-gold;
+  }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { @apply bg-dark-950; }
+  ::-webkit-scrollbar-thumb { @apply bg-dark-600 rounded-full; }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #F9D97A 0%, #F2BE42 60%, #C49A1A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .border-shine {
+    border-image: linear-gradient(135deg, transparent, rgba(242,190,66,0.3), transparent) 1;
+  }
+
+  /* Leitura confortável */
+  .prose-reader {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    letter-spacing: 0.01em;
+  }
+}
