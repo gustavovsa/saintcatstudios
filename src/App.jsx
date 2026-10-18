@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
+import Rain from "./components/layout/Rain";
 import Home from "./pages/Home";
 import BookPage from "./pages/BookPage";
 import ReadPage from "./pages/ReadPage";
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Rain />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
