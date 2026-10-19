@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import { asset } from "../utils/asset";
 import { motion } from "framer-motion";
 import { books } from "../data/content";
 
@@ -51,7 +52,7 @@ export default function ReadPage() {
       >
         <div className="flex justify-end gap-4 mb-4">
           <a
-            href={encodeURI(prologue.pdfUrl)}
+            href={asset(prologue.pdfUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="font-cinzel text-[10px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors"
@@ -59,7 +60,7 @@ export default function ReadPage() {
             Abrir em nova aba
           </a>
           <a
-            href={encodeURI(prologue.pdfUrl)}
+            href={asset(prologue.pdfUrl)}
             download
             className="font-cinzel text-[10px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors"
           >
@@ -67,14 +68,14 @@ export default function ReadPage() {
           </a>
         </div>
         <iframe
-          src={encodeURI(prologue.pdfUrl)}
+          src={asset(prologue.pdfUrl)}
           title={`${book.title} — ${prologue.title || "Prólogo"}`}
           className="w-full min-h-[75vh] aspect-[8.5/11] border border-dark-700 bg-white"
         >
           <p className="p-6 text-dark-950">
             Seu navegador não conseguiu exibir o PDF.{" "}
             <a
-              href={encodeURI(prologue.pdfUrl)}
+              href={asset(prologue.pdfUrl)}
               target="_blank"
               rel="noopener noreferrer"
             >

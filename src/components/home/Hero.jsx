@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { asset } from "../../utils/asset";
 import { motion, useAnimationControls } from "framer-motion";
 
 const fade = (delay = 0) => ({
@@ -60,7 +61,7 @@ function HeroSlide({ slide, index, isActive }) {
 
   return (
     <motion.img
-      src={encodeURI(slide.src)}
+      src={asset(slide.src)}
       alt=""
       aria-hidden="true"
       className="absolute top-0 left-[-25%] h-full w-[150%] object-cover"

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { asset } from "../utils/asset";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { books, characters, reviews, progress, faq } from "../data/content";
@@ -27,7 +28,7 @@ function BookHero({ book }) {
       <div className="absolute inset-0 bg-dark-950">
         {book.heroBackground && (
           <img
-            src={encodeURI(book.heroBackground)}
+            src={asset(book.heroBackground)}
             alt=""
             className="w-full h-full object-cover"
             style={{
@@ -60,7 +61,7 @@ function BookHero({ book }) {
             />
             {book.cover ? (
               <img
-                src={book.cover}
+                src={asset(book.cover)}
                 alt={book.coverAlt}
                 className="relative w-52 md:w-64 shadow-2xl animate-float"
               />
@@ -176,7 +177,7 @@ function Gallery({ images }) {
             <motion.img
               key={i}
               {...fadeUp(i * 0.08)}
-              src={img.src}
+              src={asset(img.src)}
               alt={img.alt}
               className="h-64 md:h-80 w-auto object-cover shrink-0"
             />
@@ -212,7 +213,7 @@ function FreeRead({ book }) {
             </Link>
             {book.prologue.pdfUrl && (
               <a
-                href={encodeURI(book.prologue.pdfUrl)}
+                href={asset(book.prologue.pdfUrl)}
                 download
                 className="font-cinzel text-[11px] tracking-[0.25em] uppercase px-8 py-3 border border-white/20 text-white/50 hover:border-gold/50 hover:text-gold transition-all duration-300"
               >
@@ -247,7 +248,7 @@ function Characters({ characters: bookCharacters }) {
               <div className="aspect-square bg-dark-800 border border-dark-600 mb-3 overflow-hidden">
                 {char.image ? (
                   <img
-                    src={char.image}
+                    src={asset(char.image)}
                     alt={char.name}
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
@@ -395,7 +396,7 @@ function Author({ author }) {
           <div className="w-24 h-24 md:w-32 md:h-32 bg-dark-800 border border-dark-600 shrink-0 overflow-hidden">
             {author.image && (
               <img
-                src={author.image}
+                src={asset(author.image)}
                 alt={author.name}
                 className="w-full h-full object-cover"
               />

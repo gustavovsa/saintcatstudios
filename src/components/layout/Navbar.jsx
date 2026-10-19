@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
+import { asset } from '../../utils/asset'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const links = [
-  { label: 'Início',    href: '/#inicio' },
-  { label: 'Livros',    href: '/#livros' },
-  { label: 'Jogos',     href: '/#jogos' },
-  { label: 'Novidades', href: '/#novidades' },
+  { label: 'Início',    href: import.meta.env.BASE_URL + '#inicio' },
+  { label: 'Livros',    href: import.meta.env.BASE_URL + '#livros' },
+  { label: 'Jogos',     href: import.meta.env.BASE_URL + '#jogos' },
+  { label: 'Novidades', href: import.meta.env.BASE_URL + '#novidades' },
 ]
 
 export default function Navbar() {
@@ -43,7 +44,7 @@ export default function Navbar() {
           className="flex items-center gap-3 group"
         >
           <motion.img
-            src="/images/site/logo gato.png"
+            src={asset('/images/site/logo gato.png')}
             alt=""
             initial={{ opacity: 0, scale: 0.8, rotate: -8 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -52,7 +53,7 @@ export default function Navbar() {
             className="h-9 w-auto object-contain"
           />
           <motion.img
-            src="/images/site/logo sc.png"
+            src={asset('/images/site/logo sc.png')}
             alt=""
             initial={{ opacity: 0, x: -32 }}
             animate={{ opacity: 1, x: 0 }}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { asset } from "../../utils/asset";
 import { motion, AnimatePresence } from "framer-motion";
 import { games, characters, reviews, progress, faq } from "../../data/content";
 
@@ -33,7 +34,7 @@ export default function GamesSection() {
       {game.heroBackground && (
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src={encodeURI(game.heroBackground)}
+            src={asset(game.heroBackground)}
             alt=""
             className="w-full h-full object-cover mix-blend-screen"
             style={{
@@ -76,7 +77,7 @@ export default function GamesSection() {
                 />
                 {game.cover ? (
                   <img
-                    src={game.cover}
+                    src={asset(game.cover)}
                     alt={`${game.title} — arte`}
                     className="relative w-64 md:w-80 animate-float"
                   />
@@ -177,7 +178,7 @@ export default function GamesSection() {
                   <div className="aspect-square bg-dark-800 border border-dark-600 mb-3 overflow-hidden">
                     {char.image ? (
                       <img
-                        src={char.image}
+                        src={asset(char.image)}
                         alt={char.name}
                         className="w-full h-full object-cover object-top"
                       />

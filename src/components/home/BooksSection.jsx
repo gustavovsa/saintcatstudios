@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { books } from '../../data/content'
+import { asset } from '../../utils/asset'
 
 const variants = {
   enter: dir => ({ opacity: 0, x: dir > 0 ? 50 : -50 }),
@@ -65,7 +66,7 @@ export default function BooksSection() {
                   />
                   {book.cover ? (
                     <motion.img
-                      src={book.cover}
+                      src={asset(book.cover)}
                       alt={book.coverAlt}
                       className="relative w-52 md:w-64 shadow-2xl animate-float"
                     />
@@ -142,7 +143,7 @@ export default function BooksSection() {
                   <div className="aspect-[2/3] bg-dark-800 border border-dark-700 overflow-hidden mb-3">
                     {b.cover && (
                       <img
-                        src={b.cover}
+                        src={asset(b.cover)}
                         alt={b.coverAlt}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
