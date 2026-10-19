@@ -21,6 +21,12 @@ export default function Localizador() {
       ([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
+        // O modelo é comprimido com Draco; o decodificador vem de public/draco/
+        // (sem isso o model-viewer buscaria no servidor do Google)
+        window.ModelViewerElement = {
+          ...window.ModelViewerElement,
+          dracoDecoderLocation: asset("/draco/"),
+        };
         import("@google/model-viewer").then(() => setReady(true));
       },
       { rootMargin: "400px" },
