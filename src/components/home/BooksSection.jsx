@@ -24,11 +24,11 @@ export default function BooksSection() {
   }
 
   return (
-    <section id="livros" className="py-28 px-6 bg-dark-950">
+    <section id="livros" className="py-20 px-6 bg-dark-950">
       <div className="max-w-7xl mx-auto">
 
         {/* Cabeçalho da seção */}
-        <div className="flex items-end justify-between mb-20">
+        <div className="flex items-end justify-between mb-12">
           <div>
             <p className="font-cinzel text-gold text-[10px] tracking-[0.5em] uppercase mb-3">Universo</p>
             <h2 className="font-cinzel text-3xl md:text-4xl font-medium text-white">Livros</h2>
@@ -36,7 +36,7 @@ export default function BooksSection() {
           {multi && (
             <button
               onClick={() => setCompact(c => !c)}
-              className="font-cinzel text-[11px] tracking-widest uppercase text-white/25 hover:text-white/60 transition-colors"
+              className="font-cinzel text-[11px] tracking-widest uppercase text-white/50 hover:text-white/90 transition-colors"
             >
               {compact ? 'Expandir' : 'Ver todos'}
             </button>
@@ -73,7 +73,7 @@ export default function BooksSection() {
                   ) : (
                     /* Placeholder enquanto não tem capa */
                     <div className="relative w-52 md:w-64 aspect-[2/3] bg-dark-800 border border-dark-600 flex items-center justify-center animate-float">
-                      <span className="font-cinzel text-white/15 text-xs tracking-widest">Em breve</span>
+                      <span className="font-cinzel text-white/40 text-xs tracking-widest">Em breve</span>
                     </div>
                   )}
                 </div>
@@ -91,10 +91,10 @@ export default function BooksSection() {
                 <h3 className="font-cinzel text-3xl md:text-4xl font-medium text-white mb-2">
                   {book.title}
                 </h3>
-                <p className="font-cinzel text-white/25 text-sm tracking-wide mb-1">{book.subtitle}</p>
-                <p className="font-cinzel text-white/15 text-xs tracking-widest mb-8">{book.series}</p>
+                <p className="font-cinzel text-white/50 text-sm tracking-wide mb-1">{book.subtitle}</p>
+                <p className="font-cinzel text-white/40 text-xs tracking-widest mb-8">{book.series}</p>
 
-                <p className="text-white/45 text-sm leading-relaxed mb-10 max-w-md whitespace-pre-line">
+                <p className="text-white/65 text-sm leading-relaxed mb-10 max-w-md whitespace-pre-line">
                   {/* Mostra só o primeiro parágrafo na home */}
                   {book.synopsis.split('\n\n')[0]}
                 </p>
@@ -103,7 +103,7 @@ export default function BooksSection() {
                   <Link
                     to={`/livros/${book.slug}`}
                     className="font-cinzel text-[11px] tracking-[0.25em] uppercase px-7 py-3
-                               border border-white/20 text-white/50 hover:border-gold/50 hover:text-gold
+                               border border-white/20 text-white/70 hover:border-gold/50 hover:text-gold
                                transition-all duration-300"
                   >
                     Conhecer →
@@ -120,7 +120,7 @@ export default function BooksSection() {
                       Comprar
                     </a>
                   ) : (
-                    <span className="font-cinzel text-[11px] tracking-widest uppercase text-white/15">
+                    <span className="font-cinzel text-[11px] tracking-widest uppercase text-white/40">
                       {book.status}
                     </span>
                   )}
@@ -149,7 +149,7 @@ export default function BooksSection() {
                       />
                     )}
                   </div>
-                  <p className="font-cinzel text-xs text-white/40 group-hover:text-gold transition-colors">
+                  <p className="font-cinzel text-xs text-white/65 group-hover:text-gold transition-colors">
                     {b.title}
                   </p>
                 </Link>
@@ -163,7 +163,7 @@ export default function BooksSection() {
           <div className="flex items-center justify-center gap-6 mt-16">
             <button
               onClick={() => go(-1)}
-              className="font-cinzel text-white/25 hover:text-gold transition-colors text-lg"
+              className="font-cinzel text-white/50 hover:text-gold transition-colors text-lg"
               aria-label="Livro anterior"
             >
               ←
@@ -182,7 +182,7 @@ export default function BooksSection() {
             </div>
             <button
               onClick={() => go(1)}
-              className="font-cinzel text-white/25 hover:text-gold transition-colors text-lg"
+              className="font-cinzel text-white/50 hover:text-gold transition-colors text-lg"
               aria-label="Próximo livro"
             >
               →

@@ -67,7 +67,7 @@ function BookHero({ book }) {
               />
             ) : (
               <div className="relative w-52 md:w-64 aspect-[2/3] bg-dark-800 border border-dark-600 flex items-center justify-center animate-float">
-                <span className="font-cinzel text-white/15 text-xs">
+                <span className="font-cinzel text-white/40 text-xs">
                   capa em breve
                 </span>
               </div>
@@ -90,7 +90,7 @@ function BookHero({ book }) {
           <h1 className="font-cinzel text-4xl md:text-5xl font-medium text-white mb-2">
             {book.title}
           </h1>
-          <p className="font-cinzel text-white/30 text-sm tracking-wide mb-8">
+          <p className="font-cinzel text-white/55 text-sm tracking-wide mb-8">
             {book.subtitle}
           </p>
 
@@ -103,14 +103,14 @@ function BookHero({ book }) {
                 Garantir exemplar
               </a>
             ) : (
-              <span className="font-cinzel text-[11px] tracking-widest uppercase px-8 py-3 border border-dark-500 text-white/20 cursor-default">
+              <span className="font-cinzel text-[11px] tracking-widest uppercase px-8 py-3 border border-dark-500 text-white/45 cursor-default">
                 Em breve
               </span>
             )}
             {book.prologue?.available && (
               <Link
                 to={`/livros/${book.slug}/ler`}
-                className="font-cinzel text-[11px] tracking-[0.25em] uppercase px-8 py-3 border border-white/20 text-white/50 hover:border-gold/50 hover:text-gold transition-all duration-300"
+                className="font-cinzel text-[11px] tracking-[0.25em] uppercase px-8 py-3 border border-white/20 text-white/70 hover:border-gold/50 hover:text-gold transition-all duration-300"
               >
                 Ler prólogo
               </Link>
@@ -125,7 +125,7 @@ function BookHero({ book }) {
 // ─── 2. Sinopse ───────────────────────────────────────────────────────────────
 function Synopsis({ book }) {
   return (
-    <section className="py-24 px-6 bg-dark-950">
+    <section className="py-16 px-6 bg-dark-950">
       <div className="max-w-2xl mx-auto">
         <motion.div {...fadeUp()}>
           <SectionLabel>A história</SectionLabel>
@@ -147,13 +147,13 @@ function EmotionalSection({ content }) {
   if (!content) return null;
 
   return (
-    <section className="py-24 px-6 bg-dark-900">
+    <section className="py-16 px-6 bg-dark-900">
       <div className="max-w-2xl mx-auto text-center">
         <motion.div {...fadeUp()}>
           <blockquote className="font-cinzel text-xl md:text-2xl font-medium text-white/80 leading-[1.6] mb-8">
             {content.quote}
           </blockquote>
-          <p className="text-white/35 text-sm leading-relaxed max-w-lg mx-auto">
+          <p className="text-white/60 text-sm leading-relaxed max-w-lg mx-auto">
             {content.description}
           </p>
         </motion.div>
@@ -167,7 +167,7 @@ function Gallery({ images }) {
   if (images.length === 0) return null;
 
   return (
-    <section className="py-20 px-6 bg-dark-950 overflow-x-auto">
+    <section className="py-14 px-6 bg-dark-950 overflow-x-auto">
       <div className="max-w-7xl mx-auto">
         <motion.div {...fadeUp()}>
           <SectionLabel>Arte & universo</SectionLabel>
@@ -193,14 +193,14 @@ function FreeRead({ book }) {
   if (!book.prologue?.available) return null;
 
   return (
-    <section className="py-24 px-6 bg-dark-900">
+    <section className="py-16 px-6 bg-dark-900">
       <div className="max-w-2xl mx-auto text-center">
         <motion.div {...fadeUp()}>
           <SectionLabel>Leitura gratuita</SectionLabel>
           <h2 className="font-cinzel text-2xl md:text-3xl font-medium text-white mb-4">
             {book.prologue.heading || "Comece agora. Sem compromisso."}
           </h2>
-          <p className="text-white/35 text-sm leading-relaxed mb-10">
+          <p className="text-white/60 text-sm leading-relaxed mb-10">
             {book.prologue.description ||
               "O prólogo está disponível. Leia antes de decidir qualquer coisa."}
           </p>
@@ -215,7 +215,7 @@ function FreeRead({ book }) {
               <a
                 href={asset(book.prologue.pdfUrl)}
                 download
-                className="font-cinzel text-[11px] tracking-[0.25em] uppercase px-8 py-3 border border-white/20 text-white/50 hover:border-gold/50 hover:text-gold transition-all duration-300"
+                className="font-cinzel text-[11px] tracking-[0.25em] uppercase px-8 py-3 border border-white/20 text-white/70 hover:border-gold/50 hover:text-gold transition-all duration-300"
               >
                 Baixar PDF
               </a>
@@ -232,9 +232,9 @@ function Characters({ characters: bookCharacters }) {
   if (bookCharacters.length === 0) return null;
 
   return (
-    <section className="py-24 px-6 bg-dark-950">
+    <section className="py-16 px-6 bg-dark-950">
       <div className="max-w-7xl mx-auto">
-        <motion.div {...fadeUp()} className="mb-12">
+        <motion.div {...fadeUp()} className="mb-8">
           <SectionLabel>Os escolhidos</SectionLabel>
           <h2 className="font-cinzel text-2xl md:text-3xl font-medium text-white">
             Personagens
@@ -263,7 +263,7 @@ function Characters({ characters: bookCharacters }) {
               <p className="font-cinzel text-sm font-medium text-white group-hover:text-gold transition-colors">
                 {char.name}
               </p>
-              <p className="text-white/30 text-xs leading-snug mt-1">
+              <p className="text-white/55 text-xs leading-snug mt-1">
                 {char.essence}
               </p>
             </motion.div>
@@ -275,27 +275,40 @@ function Characters({ characters: bookCharacters }) {
 }
 
 // ─── 7. Motivos para comprar ──────────────────────────────────────────────────
+// Colunas no desktop conforme a quantidade de cards, pra nenhum ficar sozinho
+const reasonColumns = {
+  3: "lg:grid-cols-3",
+  5: "lg:grid-cols-5",
+  6: "lg:grid-cols-3",
+};
+
 function WhyBuy({ reasons }) {
   if (reasons.length === 0) return null;
 
+  const columns = reasonColumns[reasons.length] ?? "lg:grid-cols-4";
+  const oddCount = reasons.length % 2 === 1;
+
   return (
-    <section className="py-24 px-6 bg-dark-900">
+    <section className="py-16 px-6 bg-dark-900">
       <div className="max-w-7xl mx-auto">
-        <motion.div {...fadeUp()} className="mb-12">
+        <motion.div {...fadeUp()} className="mb-8">
           <SectionLabel>Por que ler</SectionLabel>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 ${columns} gap-6`}>
           {reasons.map((r, i) => (
             <motion.div
               key={i}
               {...fadeUp(i * 0.08)}
-              className="border border-dark-600 p-6 hover:border-gold/20 transition-colors duration-300"
+              className={`border border-dark-600 p-6 hover:border-gold/20 transition-colors duration-300 ${
+                // No tablet (2 colunas), o último card ímpar ocupa a linha toda
+                oddCount && i === reasons.length - 1 ? "sm:col-span-2 lg:col-span-1" : ""
+              }`}
             >
               <span className="text-gold text-2xl mb-4 block">{r.icon}</span>
               <h3 className="font-cinzel text-sm font-medium text-white mb-3">
                 {r.title}
               </h3>
-              <p className="text-white/35 text-xs leading-relaxed">{r.desc}</p>
+              <p className="text-white/60 text-xs leading-relaxed">{r.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -308,10 +321,37 @@ function WhyBuy({ reasons }) {
 function Reviews({ reviews: bookReviews }) {
   if (bookReviews.length === 0) return null;
 
+  // Uma avaliação só vira depoimento em destaque, centralizado
+  if (bookReviews.length === 1) {
+    const [r] = bookReviews;
+    return (
+      <section className="py-16 px-6 bg-dark-950">
+        <motion.figure {...fadeUp()} className="max-w-3xl mx-auto text-center">
+          <SectionLabel>Quem já leu</SectionLabel>
+          <span
+            aria-hidden="true"
+            className="block font-cinzel text-gold/60 text-6xl leading-none mt-4 mb-2"
+          >
+            “
+          </span>
+          <blockquote className="text-white/80 text-lg md:text-xl leading-[1.8] italic whitespace-pre-line mb-6">
+            {r.text}
+          </blockquote>
+          <figcaption className="font-cinzel text-xs tracking-widest text-white/55">
+            {r.author}, {r.age} anos
+            {r.context && <span className="text-white/40"> — {r.context}</span>}
+          </figcaption>
+        </motion.figure>
+      </section>
+    );
+  }
+
+  const oddCount = bookReviews.length % 2 === 1;
+
   return (
-    <section className="py-24 px-6 bg-dark-950">
+    <section className="py-16 px-6 bg-dark-950">
       <div className="max-w-7xl mx-auto">
-        <motion.div {...fadeUp()} className="mb-12">
+        <motion.div {...fadeUp()} className="mb-8">
           <SectionLabel>Quem já leu</SectionLabel>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -319,15 +359,17 @@ function Reviews({ reviews: bookReviews }) {
             <motion.div
               key={r.id}
               {...fadeUp(i * 0.1)}
-              className="border-l-2 border-dark-600 pl-6 py-2"
+              className={`border-l-2 border-dark-600 pl-6 py-2 ${
+                oddCount && i === bookReviews.length - 1 ? "md:col-span-2" : ""
+              }`}
             >
-              <p className="text-white/50 text-sm leading-[1.9] mb-5 italic whitespace-pre-line">
+              <p className="text-white/70 text-sm leading-[1.9] mb-5 italic whitespace-pre-line">
                 "{r.text}"
               </p>
-              <p className="font-cinzel text-xs text-white/30">
+              <p className="font-cinzel text-xs text-white/55">
                 {r.author}, {r.age} anos
                 {r.context && (
-                  <span className="text-white/15"> — {r.context}</span>
+                  <span className="text-white/40"> — {r.context}</span>
                 )}
               </p>
             </motion.div>
@@ -343,40 +385,36 @@ function Progress({ bookProgress }) {
   if (!bookProgress) return null;
 
   return (
-    <section className="py-24 px-6 bg-dark-900">
-      <div className="max-w-2xl mx-auto">
-        <motion.div {...fadeUp()} className="mb-12">
-          <SectionLabel>Em produção</SectionLabel>
-          <h2 className="font-cinzel text-2xl font-medium text-white">
-            Acompanhe ao vivo
-          </h2>
-        </motion.div>
-
-        {bookProgress && (
-          <motion.div {...fadeUp(0.1)} className="mb-10">
-            <div className="flex justify-between items-baseline mb-3">
-              <p className="font-cinzel text-xs tracking-widest text-white/50">
-                {bookProgress.label}
-              </p>
-              <p className="font-cinzel text-xs text-white/25">
-                {bookProgress.percent}%
-              </p>
-            </div>
-            <div className="h-px bg-dark-600 rounded-full overflow-hidden">
+    <section className="py-10 px-6 bg-dark-900">
+      {/* Faixa compacta: rótulo, barra e percentual numa linha só */}
+      <motion.div {...fadeUp()} className="max-w-4xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
+          <p className="font-cinzel text-xs tracking-widest text-white/70 md:whitespace-nowrap">
+            <span className="text-gold text-[10px] tracking-[0.4em] uppercase">
+              Em produção
+            </span>
+            <span className="text-white/40"> · </span>
+            {bookProgress.label}
+          </p>
+          <div className="flex items-center gap-4 flex-1">
+            <div className="flex-1 h-1 bg-dark-600 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 whileInView={{ width: `${bookProgress.percent}%` }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="h-full bg-gold/50 rounded-full"
+                className="h-full bg-gold/70 rounded-full"
               />
             </div>
-            <p className="text-white/20 text-xs mt-2">
-              {bookProgress.status} · {bookProgress.updatedAt}
+            <p className="font-cinzel text-sm text-gold">
+              {bookProgress.percent}%
             </p>
-          </motion.div>
-        )}
-      </div>
+          </div>
+        </div>
+        <p className="text-white/50 text-xs mt-3">
+          {bookProgress.status} · {bookProgress.updatedAt}
+        </p>
+      </motion.div>
     </section>
   );
 }
@@ -386,7 +424,7 @@ function Author({ author }) {
   if (!author) return null;
 
   return (
-    <section className="py-24 px-6 bg-dark-950">
+    <section className="py-16 px-6 bg-dark-950">
       <div className="max-w-2xl mx-auto">
         <motion.div
           {...fadeUp()}
@@ -408,7 +446,7 @@ function Author({ author }) {
             <h2 className="font-cinzel text-xl font-medium text-white mb-5">
               {author.name}
             </h2>
-            <div className="space-y-4 text-white/45 text-sm leading-[1.9]">
+            <div className="space-y-4 text-white/65 text-sm leading-[1.9]">
               {author.bio.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
@@ -434,7 +472,7 @@ function BookCTA({ book }) {
   };
 
   return (
-    <section className="py-28 px-6 bg-dark-900">
+    <section className="py-20 px-6 bg-dark-900">
       <div className="max-w-xl mx-auto text-center">
         <motion.div {...fadeUp()}>
           {book.available && book.buyLink ? (
@@ -456,7 +494,7 @@ function BookCTA({ book }) {
               <h2 className="font-cinzel text-2xl md:text-3xl font-medium text-white mb-4">
                 O livro está chegando.
               </h2>
-              <p className="text-white/30 text-sm mb-10">
+              <p className="text-white/55 text-sm mb-10">
                 Deixa seu e-mail. Quando estiver pronto, você é avisado antes de
                 qualquer um.
               </p>
@@ -475,7 +513,7 @@ function BookCTA({ book }) {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="seu@email.com"
                     required
-                    className="flex-1 bg-dark-800 border border-dark-600 border-r-0 px-4 py-3 text-sm text-white/60 placeholder:text-white/20 outline-none focus:border-gold/30 transition-colors"
+                    className="flex-1 bg-dark-800 border border-dark-600 border-r-0 px-4 py-3 text-sm text-white/60 placeholder:text-white/45 outline-none focus:border-gold/30 transition-colors"
                   />
                   <button
                     type="submit"
@@ -498,9 +536,9 @@ function FAQ({ items }) {
   const [open, setOpen] = useState(null);
 
   return (
-    <section className="py-24 px-6 bg-dark-950">
+    <section className="py-16 px-6 bg-dark-950">
       <div className="max-w-2xl mx-auto">
-        <motion.div {...fadeUp()} className="mb-12">
+        <motion.div {...fadeUp()} className="mb-8">
           <SectionLabel>Dúvidas</SectionLabel>
         </motion.div>
         <div>
@@ -517,7 +555,7 @@ function FAQ({ items }) {
                 <span className="font-cinzel text-sm text-white/60 hover:text-white/90 transition-colors">
                   {item.q}
                 </span>
-                <span className="text-white/25 shrink-0 text-lg leading-none">
+                <span className="text-white/50 shrink-0 text-lg leading-none">
                   {open === i ? "−" : "+"}
                 </span>
               </button>
@@ -530,7 +568,7 @@ function FAQ({ items }) {
                 transition={{ duration: 0.25 }}
                 className="overflow-hidden"
               >
-                <p className="text-white/35 text-sm leading-[1.85] pb-5">
+                <p className="text-white/60 text-sm leading-[1.85] pb-5">
                   {item.a}
                 </p>
               </motion.div>

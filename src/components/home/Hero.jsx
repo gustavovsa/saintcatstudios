@@ -124,7 +124,7 @@ export default function Hero() {
 
         <motion.p
           {...fade(0.75)}
-          className="text-white/40 text-sm md:text-base leading-relaxed mb-12 max-w-md mx-auto"
+          className="text-white/65 text-sm md:text-base leading-relaxed mb-12 max-w-md mx-auto"
         >
           Livros, jogos e histórias que atravessam eras.
         </motion.p>
@@ -143,7 +143,7 @@ export default function Hero() {
           <a
             href="#novidades"
             className="font-cinzel text-[11px] tracking-[0.25em] uppercase px-8 py-3
-                       border border-white/15 text-white/40 hover:border-gold/40 hover:text-gold
+                       border border-white/15 text-white/65 hover:border-gold/40 hover:text-gold
                        transition-all duration-300"
           >
             Novidades

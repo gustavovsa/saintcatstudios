@@ -31,13 +31,13 @@ export default function ReadPage() {
           <p className="font-cinzel text-gold text-[10px] tracking-[0.5em] uppercase mb-1">
             {book.title}
           </p>
-          <p className="font-cinzel text-white/30 text-xs tracking-widest">
+          <p className="font-cinzel text-white/55 text-xs tracking-widest">
             {prologue.title || "Prólogo"}
           </p>
         </div>
         <Link
           to={`/livros/${book.slug}`}
-          className="font-cinzel text-[10px] tracking-widest uppercase text-white/25 hover:text-white/60 transition-colors"
+          className="font-cinzel text-[10px] tracking-widest uppercase text-white/50 hover:text-white/90 transition-colors"
         >
           ← Voltar
         </Link>
@@ -55,14 +55,14 @@ export default function ReadPage() {
             href={asset(prologue.pdfUrl)}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-cinzel text-[10px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors"
+            className="font-cinzel text-[10px] tracking-widest uppercase text-white/70 hover:text-gold transition-colors"
           >
             Abrir em nova aba
           </a>
           <a
             href={asset(prologue.pdfUrl)}
             download
-            className="font-cinzel text-[10px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors"
+            className="font-cinzel text-[10px] tracking-widest uppercase text-white/70 hover:text-gold transition-colors"
           >
             Baixar PDF
           </a>
@@ -85,7 +85,7 @@ export default function ReadPage() {
         </iframe>
 
         <div className="text-center py-16 border-t border-dark-700 mt-12">
-          <p className="font-cinzel text-white/30 text-xs tracking-[0.4em] uppercase mb-5">
+          <p className="font-cinzel text-white/55 text-xs tracking-[0.4em] uppercase mb-5">
             Gostou?
           </p>
           <Link

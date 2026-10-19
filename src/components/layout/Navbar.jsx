@@ -68,7 +68,7 @@ export default function Navbar() {
             <a
               key={href}
               href={href}
-              className="font-cinzel text-[11px] tracking-[0.25em] uppercase text-white/40 hover:text-gold transition-colors duration-300"
+              className="font-cinzel text-[11px] tracking-[0.25em] uppercase text-white/65 hover:text-gold transition-colors duration-300"
             >
               {label}
             </a>
@@ -114,7 +114,7 @@ export default function Navbar() {
                   key={href}
                   href={href}
                   onClick={() => setOpen(false)}
-                  className="font-cinzel text-xs tracking-[0.25em] uppercase text-white/40 hover:text-gold transition-colors"
+                  className="font-cinzel text-xs tracking-[0.25em] uppercase text-white/65 hover:text-gold transition-colors"
                 >
                   {label}
                 </a>

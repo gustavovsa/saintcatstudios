@@ -22,7 +22,8 @@ Vite 6 + React 19 (JSX, no TypeScript), React Router 7, Tailwind CSS 3 (via Post
 - **Routing** (`src/App.jsx`, `BrowserRouter`): `/` → `Home`, `/livros/:slug` → `BookPage`, `/livros/:slug/ler` → `ReadPage`. Books are looked up by `slug`. `ScrollToTop` resets scroll on route change; `Navbar`/`Footer` wrap every route.
 - `Home` composes sections from `src/components/home/`; `BookPage` defines most of its sub-sections inline in the same file.
 - **Prologue reader**: `ReadPage` embeds a PDF from `public/prologues/` in an iframe. `pdfUrl` values contain spaces and non-ASCII characters, so they are always passed through `encodeURI()`.
-- **Assets**: images live under `public/images/` and are referenced by absolute paths (`/images/...`) from `content.js`; filenames contain spaces.
+- **News media**: `news[]` items accept optional `image` or `video` (+ `mediaAlt`); videos autoplay muted unless the visitor prefers reduced motion.
+- **Assets**: images live under `public/images/` and are referenced by absolute paths (`/images/...`) from `content.js`; filenames contain spaces. Render them through `asset()` (`src/utils/asset.js`), which prepends the Vite `base` (`/saintcatstudios/` for GitHub Pages) and URL-encodes.
 
 ## Styling
 
