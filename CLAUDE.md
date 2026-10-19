@@ -23,6 +23,7 @@ Vite 6 + React 19 (JSX, no TypeScript), React Router 7, Tailwind CSS 3 (via Post
 - `Home` composes sections from `src/components/home/`; `BookPage` defines most of its sub-sections inline in the same file.
 - **Prologue reader**: `ReadPage` embeds a PDF from `public/prologues/` in an iframe. `pdfUrl` values contain spaces and non-ASCII characters, so they are always passed through `encodeURI()`.
 - **News media**: `news[]` items accept optional `image` or `video` (+ `mediaAlt`); videos autoplay muted unless the visitor prefers reduced motion.
+- **Fragmentos** (`src/components/fragments/`): 13 hidden collectibles. `FragmentsProvider` (wraps the app in `App.jsx`) keeps found ids in `localStorage` (`saintcat:fragmentos`) and renders the dialog and counter; `<Fragment id={n} />` is the clickable glow; texts live in `src/data/fragments.js`. Static spots are hardcoded in components (book-page ones only for `the-storm-fall`); list items opt in via a `fragment: n` field in `content.js` (characters, news, faq, game progress items). When all are found, `Localizador` (3D `public/models/O Localizador.glb` via lazily imported `@google/model-viewer`, shown in Jogos when `game.localizador` is true) glows and shows `localizadorReward`.
 - **Assets**: images live under `public/images/` and are referenced by absolute paths (`/images/...`) from `content.js`; filenames contain spaces. Render them through `asset()` (`src/utils/asset.js`), which prepends the Vite `base` (`/saintcatstudios/` for GitHub Pages) and URL-encodes.
 
 ## Styling

@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { asset } from "../utils/asset";
 import { motion } from "framer-motion";
 import { books } from "../data/content";
+import Fragment from "../components/fragments/Fragment";
 
 export default function ReadPage() {
   const { slug } = useParams();
@@ -33,6 +34,10 @@ export default function ReadPage() {
           </p>
           <p className="font-cinzel text-white/55 text-xs tracking-widest">
             {prologue.title || "Prólogo"}
+            {/* Fragmento 12 */}
+            {book.id === "the-storm-fall" && (
+              <Fragment id={12} className="relative ml-1" />
+            )}
           </p>
         </div>
         <Link
@@ -84,7 +89,11 @@ export default function ReadPage() {
           </p>
         </iframe>
 
-        <div className="text-center py-16 border-t border-dark-700 mt-12">
+        <div className="relative text-center py-16 border-t border-dark-700 mt-12">
+          {/* Fragmento 13 */}
+          {book.id === "the-storm-fall" && (
+            <Fragment id={13} className="absolute bottom-4 right-6" />
+          )}
           <p className="font-cinzel text-white/55 text-xs tracking-[0.4em] uppercase mb-5">
             Gostou?
           </p>

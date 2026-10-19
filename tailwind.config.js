@@ -33,11 +33,16 @@ export default {
       animation: {
         'glow-pulse': 'glowPulse 4s ease-in-out infinite',
         'float': 'float 6s ease-in-out infinite',
+        'fragment-pulse': 'fragmentPulse 3.5s ease-in-out infinite',
       },
       keyframes: {
         glowPulse: {
           '0%, 100%': { opacity: '0.12' },
           '50%': { opacity: '0.28' },
+        },
+        fragmentPulse: {
+          '0%, 100%': { opacity: '0.25' },
+          '50%': { opacity: '0.9' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },

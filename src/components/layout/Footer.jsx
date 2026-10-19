@@ -1,4 +1,5 @@
 import { Link, Links } from 'react-router-dom'
+import Fragment from '../fragments/Fragment'
 
 export default function Footer() {
   return (
@@ -33,6 +34,8 @@ export default function Footer() {
 
         <p className="text-white/40 text-xs font-cinzel tracking-widest">
           © {new Date().getFullYear()} Saint Cat
+          {/* Fragmento 5 */}
+          <Fragment id={5} className="relative ml-1" />
         </p>
       </div>
     </footer>

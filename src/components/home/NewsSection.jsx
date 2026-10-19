@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { news, books, games } from "../../data/content";
 import { asset } from "../../utils/asset";
+import Fragment from "../fragments/Fragment";
 
 const relatedTitle = (item) => {
   if (item.bookId) {
@@ -91,6 +92,9 @@ export default function NewsSection() {
                   </span>
                 )}
                 <span className="text-white/70 text-sm">{item.text}</span>
+                {item.fragment && (
+                  <Fragment id={item.fragment} className="relative ml-2" />
+                )}
                 <NewsMedia item={item} />
               </div>
             </motion.div>

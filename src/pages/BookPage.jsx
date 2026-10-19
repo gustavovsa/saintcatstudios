@@ -3,6 +3,10 @@ import { asset } from "../utils/asset";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { books, characters, reviews, progress, faq } from "../data/content";
+import Fragment from "../components/fragments/Fragment";
+
+// Os fragmentos da página de livro só existem em The Storm Fall
+const FRAGMENT_BOOK = "the-storm-fall";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -59,6 +63,10 @@ function BookHero({ book }) {
               className="absolute -inset-8 blur-3xl opacity-20 animate-glow-pulse rounded-full"
               style={{ background: book.accentColor }}
             />
+            {/* Fragmento 6 */}
+            {book.id === FRAGMENT_BOOK && (
+              <Fragment id={6} className="absolute -left-6 top-1/3" />
+            )}
             {book.cover ? (
               <img
                 src={asset(book.cover)}
@@ -130,9 +138,13 @@ function Synopsis({ book }) {
         <motion.div {...fadeUp()}>
           <SectionLabel>A história</SectionLabel>
           <div className="space-y-5">
-            {book.synopsis.split("\n\n").map((para, i) => (
+            {book.synopsis.split("\n\n").map((para, i, all) => (
               <p key={i} className="text-white/55 text-base leading-[1.9]">
                 {para}
+                {/* Fragmento 7 */}
+                {book.id === FRAGMENT_BOOK && i === all.length - 1 && (
+                  <Fragment id={7} className="relative ml-1" />
+                )}
               </p>
             ))}
           </div>
@@ -143,7 +155,7 @@ function Synopsis({ book }) {
 }
 
 // ─── 3. Identificação emocional ───────────────────────────────────────────────
-function EmotionalSection({ content }) {
+function EmotionalSection({ content, fragment }) {
   if (!content) return null;
 
   return (
@@ -152,6 +164,7 @@ function EmotionalSection({ content }) {
         <motion.div {...fadeUp()}>
           <blockquote className="font-cinzel text-xl md:text-2xl font-medium text-white/80 leading-[1.6] mb-8">
             {content.quote}
+            {fragment && <Fragment id={fragment} className="relative ml-2" />}
           </blockquote>
           <p className="text-white/60 text-sm leading-relaxed max-w-lg mx-auto">
             {content.description}
@@ -245,7 +258,10 @@ function Characters({ characters: bookCharacters }) {
           {bookCharacters.map((char, i) => (
             <motion.div key={char.id} {...fadeUp(i * 0.07)} className="group">
               {/* Avatar */}
-              <div className="aspect-square bg-dark-800 border border-dark-600 mb-3 overflow-hidden">
+              <div className="relative aspect-square bg-dark-800 border border-dark-600 mb-3 overflow-hidden">
+                {char.fragment && (
+                  <Fragment id={char.fragment} className="absolute top-1 right-1" />
+                )}
                 {char.image ? (
                   <img
                     src={asset(char.image)}
@@ -318,7 +334,7 @@ function WhyBuy({ reasons }) {
 }
 
 // ─── 8. Avaliações ────────────────────────────────────────────────────────────
-function Reviews({ reviews: bookReviews }) {
+function Reviews({ reviews: bookReviews, fragment }) {
   if (bookReviews.length === 0) return null;
 
   // Uma avaliação só vira depoimento em destaque, centralizado
@@ -326,7 +342,7 @@ function Reviews({ reviews: bookReviews }) {
     const [r] = bookReviews;
     return (
       <section className="py-16 px-6 bg-dark-950">
-        <motion.figure {...fadeUp()} className="max-w-3xl mx-auto text-center">
+        <motion.figure {...fadeUp()} className="relative max-w-3xl mx-auto text-center">
           <SectionLabel>Quem já leu</SectionLabel>
           <span
             aria-hidden="true"
@@ -334,6 +350,9 @@ function Reviews({ reviews: bookReviews }) {
           >
             “
           </span>
+          {fragment && (
+            <Fragment id={fragment} className="absolute left-1/2 top-12 translate-x-5" />
+          )}
           <blockquote className="text-white/80 text-lg md:text-xl leading-[1.8] italic whitespace-pre-line mb-6">
             {r.text}
           </blockquote>
@@ -370,6 +389,9 @@ function Reviews({ reviews: bookReviews }) {
                 {r.author}, {r.age} anos
                 {r.context && (
                   <span className="text-white/40"> — {r.context}</span>
+                )}
+                {fragment && i === 0 && (
+                  <Fragment id={fragment} className="relative ml-1" />
                 )}
               </p>
             </motion.div>
@@ -570,6 +592,9 @@ function FAQ({ items }) {
               >
                 <p className="text-white/60 text-sm leading-[1.85] pb-5">
                   {item.a}
+                  {item.fragment && (
+                    <Fragment id={item.fragment} className="relative ml-1" />
+                  )}
                 </p>
               </motion.div>
             </motion.div>
@@ -610,12 +635,18 @@ export default function BookPage() {
     <main>
       <BookHero book={book} />
       <Synopsis book={book} />
-      <EmotionalSection content={book.emotional} />
+      <EmotionalSection
+        content={book.emotional}
+        fragment={book.id === FRAGMENT_BOOK ? 8 : null}
+      />
       <Gallery images={book.gallery} />
       <FreeRead book={book} />
       <Characters characters={bookCharacters} />
       <WhyBuy reasons={book.reasons} />
-      <Reviews reviews={bookReviews} />
+      <Reviews
+        reviews={bookReviews}
+        fragment={book.id === FRAGMENT_BOOK ? 10 : null}
+      />
       <Progress bookProgress={bookProgress} />
       <Author author={book.author} />
       <BookCTA book={book} />

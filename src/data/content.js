@@ -117,6 +117,7 @@ export const books = [
 export const games = [
   {
     id: "tsf-game",
+    localizador: true, // mostra o Localizador 3D no lugar da arte do jogo
     slug: "the-storm-fall-game",
     bookId: "the-storm-fall",
     title: "The Storm Fall",
@@ -160,6 +161,7 @@ export const characters = [
     role: "",
     essence: "Hoje ele nota tudo. Teme o que um dia deixou passar.",
     image: "/images/chars/H.png",
+    fragment: 9,
     bookIds: ["the-storm-fall"],
     gameIds: [],
   },
@@ -239,7 +241,7 @@ export const progress = {
       items: [
         { label: "Modelagem: Gustavo", done: true },
         { label: "Modelagem: Gancho", done: true },
-        { label: "Modelagem: Localizador", done: true },
+        { label: "Modelagem: Localizador", done: true, fragment: 3 },
         { label: "Sistema de gancho", done: false, detail: "~60%" },
         // Adicionar mais conforme avança
       ],
@@ -262,6 +264,7 @@ export const faq = [
   },
   {
     q: "O universo tem mais livros planejados?",
+    fragment: 11,
     a: "A Writer's Story é uma saga de 8 livros. The Storm Fall é o primeiro. The Mystic, o segundo, já está em desenvolvimento.",
     bookIds: ["the-storm-fall", "the-mystic"],
   },
@@ -294,6 +297,7 @@ export const news = [
     date: "Ago 2026",
     tag: "Livro",
     text: "Escrita do capítulo 1 de The Storm Fall.",
+    fragment: 4,
     bookId: "the-storm-fall",
   },
 ];

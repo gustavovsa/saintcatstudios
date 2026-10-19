@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { books } from '../../data/content'
 import { asset } from '../../utils/asset'
+import Fragment from '../fragments/Fragment'
 
 const variants = {
   enter: dir => ({ opacity: 0, x: dir > 0 ? 50 : -50 }),
@@ -75,6 +76,10 @@ export default function BooksSection() {
                     <div className="relative w-52 md:w-64 aspect-[2/3] bg-dark-800 border border-dark-600 flex items-center justify-center animate-float">
                       <span className="font-cinzel text-white/40 text-xs tracking-widest">Em breve</span>
                     </div>
+                  )}
+                  {/* Fragmento 2 */}
+                  {book.id === 'the-storm-fall' && (
+                    <Fragment id={2} className="absolute -right-3 bottom-12" />
                   )}
                 </div>
               </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { asset } from "../../utils/asset";
+import Fragment from "../fragments/Fragment";
 import { motion, useAnimationControls } from "framer-motion";
 
 const fade = (delay = 0) => ({
@@ -150,6 +151,9 @@ export default function Hero() {
           </a>
         </motion.div>
       </div>
+
+      {/* Fragmento 1 */}
+      <Fragment id={1} className="absolute bottom-[22%] right-[14%]" />
 
       {/* Indicador de scroll */}
       <motion.div

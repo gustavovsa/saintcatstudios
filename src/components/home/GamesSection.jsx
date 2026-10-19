@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { asset } from "../../utils/asset";
+import Fragment from "../fragments/Fragment";
+import Localizador from "../fragments/Localizador";
 import { motion, AnimatePresence } from "framer-motion";
 import { games, characters, reviews, progress, faq } from "../../data/content";
 
@@ -75,7 +77,9 @@ export default function GamesSection() {
                   className="absolute -inset-8 blur-3xl opacity-10 animate-glow-pulse rounded-full"
                   style={{ background: game.accentColor }}
                 />
-                {game.cover ? (
+                {game.localizador ? (
+                  <Localizador />
+                ) : game.cover ? (
                   <img
                     src={asset(game.cover)}
                     alt={`${game.title} — arte`}
@@ -155,6 +159,9 @@ export default function GamesSection() {
                           : item.detail
                             ? ` — ${item.detail}`
                             : ""}
+                        {item.fragment && (
+                          <Fragment id={item.fragment} className="relative -my-2 ml-1" />
+                        )}
                       </span>
                     ))}
                   </div>
