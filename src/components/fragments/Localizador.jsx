@@ -1,19 +1,40 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useFragments } from "./FragmentsProvider";
-import { localizadorReward } from "../../data/fragments";
+import Activation from "./Activation";
 import { asset } from "../../utils/asset";
 
 const MODEL = "/models/O Localizador.glb";
 const GLOW = [0.3, 0.45, 0.6]; // brilho azul gelo do vidro quando desperta
 
 // Modelo 3D do Localizador: apagado enquanto faltam fragmentos,
-// brilha e gira mais rápido quando os 13 são encontrados
+// brilha e gira mais rápido quando os 13 são encontrados.
+// Depois disso, pode ser ativado: teletransporta pra /localizado
 export default function Localizador() {
   const { found, total, complete } = useFragments();
+  const navigate = useNavigate();
   const wrapperRef = useRef(null);
+  const modelRef = useRef(null);
   const viewerRef = useRef(null);
   const [ready, setReady] = useState(false);
+  const [activating, setActivating] = useState(false);
+
+  // Durante a ativação: gira cada vez mais rápido e o vidro vai ao branco
+  const charge = useCallback((p) => {
+    const viewer = viewerRef.current;
+    if (!viewer?.loaded) return;
+    viewer.setAttribute("rotation-per-second", `${60 + 1500 * p * p}deg`);
+    const k = Math.min(p * 1.5, 1);
+    for (const material of viewer.model.materials) {
+      if (material.pbrMetallicRoughness.baseColorTexture?.texture) continue;
+      material.setEmissiveFactor(GLOW.map((c) => c + (1 - c) * k));
+    }
+  }, []);
+
+  const teleport = useCallback(() => {
+    navigate("/localizado", { state: { arrived: true } });
+  }, [navigate]);
 
   // Só baixa o visualizador 3D quando a seção chega perto da tela
   useEffect(() => {
@@ -65,6 +86,7 @@ export default function Localizador() {
       <motion.div
         animate={complete ? { y: -8, scale: 1.05 } : { y: 0, scale: 1 }}
         transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+        ref={modelRef}
         className="relative w-full aspect-square"
         style={{
           filter: complete
@@ -106,17 +128,22 @@ export default function Localizador() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="relative mt-4 text-center max-w-xs"
+            className="relative mt-5"
           >
-            <p className="font-cinzel text-sm text-white mb-2">
-              {localizadorReward.title}
-            </p>
-            <p className="text-white/70 text-xs leading-relaxed whitespace-pre-line">
-              {localizadorReward.text}
-            </p>
+            <button
+              onClick={() => setActivating(true)}
+              disabled={activating}
+              className="font-cinzel text-[11px] tracking-[0.3em] uppercase px-6 py-2.5 border border-ice/40 text-ice hover:bg-ice/10 hover:border-ice/70 shadow-[0_0_24px_-6px_rgba(162,196,224,0.6)] transition-all duration-300 disabled:opacity-50"
+            >
+              Ativar o Localizador
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {activating && (
+        <Activation originRef={modelRef} onProgress={charge} onDone={teleport} />
+      )}
     </div>
   );
 }

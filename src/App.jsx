@@ -7,6 +7,7 @@ import { FragmentsProvider } from "./components/fragments/FragmentsProvider";
 import Home from "./pages/Home";
 import BookPage from "./pages/BookPage";
 import ReadPage from "./pages/ReadPage";
+import LocalizadoPage from "./pages/LocalizadoPage";
 
 // Volta ao topo a cada mudança de rota
 function ScrollToTop() {
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/livros/:slug" element={<BookPage />} />
           <Route path="/livros/:slug/ler" element={<ReadPage />} />
+          <Route path="/localizado" element={<LocalizadoPage />} />
         </Routes>
         <Footer />
       </FragmentsProvider>
