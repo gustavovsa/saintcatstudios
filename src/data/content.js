@@ -13,11 +13,15 @@ export const books = [
     series: "A Writer's Story — Vol. I",
     genre: "Ação · Aventura · Fantasia",
     // Atualizar com sua sinopse final
-    synopsis: `Gustavo sonhava com isso antes de saber o nome do que sonhava.
+    synopsis: `Quando o pior pesadelo de Gustavo cai do céu, leva seu chão junto.
 
-      Hal Buruk já tinha levado tudo que importava antes mesmo do pesadelo se tornar realidade. O que sobrou foi um garoto sozinho, carregando uma casa que nunca chegou a ser um lar.
+Arrancado da própria vida ao lado de outros cinco que também nunca pediram por isso, ele precisa carregar o peso do mundo através do tempo, atrás dos treze Fragmentos da Joia do Éden.
 
-      Agora ele tem uma espada que não escolheu empunhar, um anjo que esconde mais do que revela, e cinco outros que também não pediram por nada disso. Juntos, vão atravessar o tempo em busca de algo que não deveria ter sido partido.`,
+Cada era é uma história que já estava sendo escrita antes de eles chegarem. Eles caem no meio das páginas, sem conhecer o começo, sem direito ao fim. Ali, não são heróis. São intrusos.
+
+Quanto mais fundo ele mergulha, mais perto está de se afogar. E nem toda ferida dessa jornada fica no corpo. Algumas ele vai carregar muito depois da última batalha. Mas é no fundo que ele encontra a única coisa pela qual vale a pena voltar à superfície.
+
+O pesadelo os espera no fim. E dessa vez, acordar não é uma opção.`,
     available: false,
     status: "Em breve",
     buyLink: null, // substituir pelo link real
