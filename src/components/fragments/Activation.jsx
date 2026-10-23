@@ -10,7 +10,7 @@ const CYAN = "64,220,240";
 function makeBolt(x1, y1, x2, y2, jitter) {
   let points = [[x1, y1], [x2, y2]];
   let spread = Math.hypot(x2 - x1, y2 - y1) * jitter;
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 4; i++) {
     const next = [points[0]];
     for (let j = 1; j < points.length; j++) {
       const [ax, ay] = points[j - 1];
@@ -26,6 +26,25 @@ function makeBolt(x1, y1, x2, y2, jitter) {
     spread /= 2;
   }
   return points;
+}
+
+// Brilho redondo (centro branco, borda ciano) desenhado uma vez só;
+// cada bolinha e cada luz só copia a imagem, o que é bem mais leve
+function makeGlowSprite() {
+  const size = 64;
+  const sprite = document.createElement("canvas");
+  sprite.width = size;
+  sprite.height = size;
+  const ctx = sprite.getContext("2d");
+  const half = size / 2;
+  const glow = ctx.createRadialGradient(half, half, 0, half, half, half);
+  glow.addColorStop(0, "rgba(255,255,255,1)");
+  glow.addColorStop(0.3, "rgba(255,255,255,0.9)");
+  glow.addColorStop(0.5, `rgba(${CYAN},0.7)`);
+  glow.addColorStop(1, `rgba(${CYAN},0)`);
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, size, size);
+  return sprite;
 }
 
 // Ativação do Localizador, como no desenho: anéis de frente pra tela,
@@ -52,13 +71,15 @@ export default function Activation({ originRef, onProgress, onDone }) {
     // Quem pede menos movimento (inclusive com as animações do Windows
     // desligadas) vê uma versão calma: mais lenta, sem piscar nem tremer a tela
     const pace = reduce ? 0.4 : 1;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const sprite = makeGlowSprite();
     let w = 0;
     let h = 0;
 
     const resize = () => {
       w = window.innerWidth;
       h = window.innerHeight;
+      // Brilho e rastro já são borrados: resolução alta só pesaria no celular
+      const dpr = Math.min(window.devicePixelRatio || 1, w < 768 ? 1 : 1.5);
       for (const [canvas, ctx] of [[trailCanvas, trail], [sharpCanvas, sharp]]) {
         canvas.width = w * dpr;
         canvas.height = h * dpr;
@@ -78,7 +99,7 @@ export default function Activation({ originRef, onProgress, onDone }) {
       tilt: (Math.random() - 0.5) * 0.5,
       speed: 0.8 + Math.random() * 0.4,
       size: 6 + Math.random() * 3,
-      prev: null,
+      drawn: false,
     }));
     const orbs = Array.from({ length: 8 }, (_, i) => ({
       angle: (i / 8) * Math.PI * 2 + Math.random() * 0.5,
@@ -105,15 +126,19 @@ export default function Activation({ originRef, onProgress, onDone }) {
     };
 
     const drawOrb = (ctx, x, y, size, alpha) => {
-      const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 2);
-      glow.addColorStop(0, `rgba(255,255,255,${alpha})`);
-      glow.addColorStop(0.3, `rgba(255,255,255,${alpha * 0.9})`);
-      glow.addColorStop(0.5, `rgba(${CYAN},${alpha * 0.7})`);
-      glow.addColorStop(1, `rgba(${CYAN},0)`);
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(x, y, size * 2, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(sprite, x - size * 2, y - size * 2, size * 4, size * 4);
+      ctx.globalAlpha = 1;
+    };
+
+    // Ponto da órbita de uma luz: elipse achatada e levemente inclinada
+    const orbit = (comet, angle, radius, cx, cy) => {
+      const ex = Math.cos(angle) * radius;
+      const ey = Math.sin(angle) * radius * 0.4;
+      return [
+        cx + ex * Math.cos(comet.tilt) - ey * Math.sin(comet.tilt),
+        cy + ex * Math.sin(comet.tilt) + ey * Math.cos(comet.tilt),
+      ];
     };
 
     const tick = (now) => {
@@ -136,6 +161,7 @@ export default function Activation({ originRef, onProgress, onDone }) {
       trail.fillRect(0, 0, w, h);
       trail.globalCompositeOperation = "source-over";
       trail.lineCap = "round";
+      trail.lineJoin = "round";
 
       sharp.clearRect(0, 0, w, h);
       sharp.globalCompositeOperation = "lighter";
@@ -205,35 +231,39 @@ export default function Activation({ originRef, onProgress, onDone }) {
       const active = Math.min(comets.length, 2 + Math.round(3 * p));
       const omega = (2 + 25 * p * p) * pace;
       comets.slice(0, active).forEach((comet) => {
+        const from = comet.angle;
         comet.angle += omega * comet.speed * dt;
         const radius = r * comet.radius * reach;
-        const ex = Math.cos(comet.angle) * radius;
-        const ey = Math.sin(comet.angle) * radius * 0.4;
-        const x = cx + ex * Math.cos(comet.tilt) - ey * Math.sin(comet.tilt);
-        const y = cy + ex * Math.sin(comet.tilt) + ey * Math.cos(comet.tilt);
         // Na metade de cima da volta a luz passa atrás do Localizador
-        const depth = Math.sin(comet.angle) < 0 ? 0.35 : 1;
-        if (comet.prev) {
+        const depth = 0.675 + 0.325 * Math.sin(comet.angle);
+
+        // O trecho percorrido no quadro vira vários passos curtos: mesmo
+        // rápido, o rastro sai curvo em vez de reto com quinas
+        if (comet.drawn) {
+          const steps = Math.ceil((comet.angle - from) / 0.05);
+          trail.beginPath();
+          for (let k = 0; k <= steps; k++) {
+            const [x, y] = orbit(comet, from + ((comet.angle - from) * k) / steps, radius, cx, cy);
+            if (k === 0) trail.moveTo(x, y);
+            else trail.lineTo(x, y);
+          }
           trail.lineWidth = comet.size * 2.2;
           trail.strokeStyle = `rgba(${CYAN},${0.6 * depth})`;
-          trail.beginPath();
-          trail.moveTo(comet.prev[0], comet.prev[1]);
-          trail.lineTo(x, y);
           trail.stroke();
           trail.lineWidth = comet.size * 0.8;
           trail.strokeStyle = `rgba(255,255,255,${0.95 * depth})`;
           trail.stroke();
         }
+        const [x, y] = orbit(comet, comet.angle, radius, cx, cy);
         drawOrb(trail, x, y, comet.size, depth);
-        comet.prev = [x, y];
+        comet.drawn = true;
       });
 
-      // Tremor e a página por trás embaçando e clareando antes do salto
+      // Tremor e a página por trás clareando antes do salto
       const s = Math.max(0, (p - 0.6) / 0.4);
       const shake = reduce ? 0 : s * 6;
       stageRef.current.style.transform = `translate(${(Math.random() - 0.5) * shake}px, ${(Math.random() - 0.5) * shake}px)`;
-      veilRef.current.style.backdropFilter = `blur(${s * 6}px) brightness(${1 + s}) saturate(${1 - s * 0.5})`;
-      veilRef.current.style.backgroundColor = `rgba(${CYAN},${s * 0.12})`;
+      veilRef.current.style.backgroundColor = `rgba(234,251,255,${s * 0.3})`;
 
       glowRef.current.style.opacity = String(p ** 1.5);
       const flicker = !reduce && p > 0.4 && Math.random() < 0.05 * p ? 0.25 : 0;

@@ -3,6 +3,7 @@ import { asset } from "../utils/asset";
 import { motion } from "framer-motion";
 import { books } from "../data/content";
 import Fragment from "../components/fragments/Fragment";
+import PdfPages from "../components/reader/PdfPages";
 
 export default function ReadPage() {
   const { slug } = useParams();
@@ -53,9 +54,9 @@ export default function ReadPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="max-w-5xl mx-auto px-6 pt-8"
+        className="max-w-3xl mx-auto md:px-6 pt-8"
       >
-        <div className="flex justify-end gap-4 mb-4">
+        <div className="flex justify-end gap-4 mb-4 px-6 md:px-0">
           <a
             href={asset(prologue.pdfUrl)}
             target="_blank"
@@ -72,24 +73,25 @@ export default function ReadPage() {
             Baixar PDF
           </a>
         </div>
-        <iframe
-          src={asset(prologue.pdfUrl)}
-          title={`${book.title} — ${prologue.title || "Prólogo"}`}
-          className="w-full min-h-[75vh] aspect-[8.5/11] border border-dark-700 bg-white"
-        >
-          <p className="p-6 text-dark-950">
-            Seu navegador não conseguiu exibir o PDF.{" "}
-            <a
-              href={asset(prologue.pdfUrl)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Abra o arquivo em uma nova aba.
-            </a>
-          </p>
-        </iframe>
+        {/* Páginas ocupando toda a largura (no celular, de borda a borda) */}
+        <PdfPages
+          url={asset(prologue.pdfUrl)}
+          fallback={
+            <p className="py-24 px-6 text-center text-white/70">
+              Não foi possível mostrar o prólogo aqui.{" "}
+              <a
+                href={asset(prologue.pdfUrl)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gold hover:text-gold-light"
+              >
+                Abra o PDF em uma nova aba.
+              </a>
+            </p>
+          }
+        />
 
-        <div className="relative text-center py-16 border-t border-dark-700 mt-12">
+        <div className="relative text-center py-16 px-6 border-t border-dark-700 mt-12">
           {/* Fragmento 13 */}
           {book.id === "the-storm-fall" && (
             <Fragment id={13} className="absolute bottom-4 right-6" />

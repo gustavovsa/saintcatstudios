@@ -36,7 +36,18 @@ O pesadelo os espera no fim. E dessa vez, acordar não é uma opção.`,
       description:
         "Gustavo sentia isso todas as noites. Até descobrir que o peso era real — e que ele não estava mais sozinho nisso.",
     },
-    gallery: [],
+    // Artes da seção "Arte & universo": src é o caminho da imagem,
+    // alt descreve a imagem pra quem usa leitor de tela
+    gallery: [
+      {
+        src: "/images/herosection/sc/tsf/H 3.png",
+        alt: "O Localizador sendo ativado, cercado de luzes azuis",
+      },
+      {
+        src: "/images/books/Frente Capa TSF.jpg",
+        alt: "Capa de The Storm Fall",
+      },
+    ],
     reasons: [
       {
         icon: "∞",
