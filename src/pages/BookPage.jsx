@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { asset } from "../utils/asset";
 import { Link, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { books, characters, reviews, progress, faq } from "../data/content";
 import Fragment from "../components/fragments/Fragment";
 
@@ -177,6 +177,7 @@ function EmotionalSection({ content, fragment }) {
 
 // ─── 4. Galeria de artes ──────────────────────────────────────────────────────
 function Gallery({ images }) {
+  const [open, setOpen] = useState(null); // índice da arte aberta em tela cheia
   if (images.length === 0) return null;
 
   return (
@@ -187,17 +188,90 @@ function Gallery({ images }) {
         </motion.div>
         <div className="flex gap-4 pb-4">
           {images.map((img, i) => (
-            <motion.img
+            <motion.button
               key={i}
               {...fadeUp(i * 0.08)}
-              src={asset(img.src)}
-              alt={img.alt}
-              className="h-64 md:h-80 w-auto object-cover shrink-0"
-            />
+              onClick={() => setOpen(i)}
+              aria-label={`Ampliar: ${img.alt}`}
+              className="shrink-0 cursor-zoom-in"
+            >
+              <img
+                src={asset(img.src)}
+                alt={img.alt}
+                className="h-64 md:h-80 w-auto object-cover hover:opacity-85 transition-opacity"
+              />
+            </motion.button>
           ))}
         </div>
       </div>
+      <Lightbox images={images} index={open} onChange={setOpen} />
     </section>
+  );
+}
+
+// Arte em tela cheia: setas (ou ← →) passam, clique fora ou Esc fecha
+function Lightbox({ images, index, onChange }) {
+  const image = index === null ? null : images[index];
+  const close = () => onChange(null);
+  const step = (dir) => onChange((index + dir + images.length) % images.length);
+
+  useEffect(() => {
+    if (index === null) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onChange(null);
+      if (e.key === "ArrowRight") onChange((index + 1) % images.length);
+      if (e.key === "ArrowLeft") onChange((index - 1 + images.length) % images.length);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [index, images.length, onChange]);
+
+  return (
+    <AnimatePresence>
+      {image && (
+        <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-label={image.alt}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={close}
+          className="fixed inset-0 z-[60] bg-dark-950/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
+        >
+          <img
+            src={asset(image.src)}
+            alt={image.alt}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-full object-contain"
+          />
+          <button
+            onClick={close}
+            className="absolute top-4 right-4 font-cinzel text-[10px] tracking-widest uppercase text-white/60 hover:text-white px-3 py-2"
+          >
+            Fechar
+          </button>
+          {images.length > 1 &&
+            [
+              [-1, "left-2 md:left-6", "‹", "Anterior"],
+              [1, "right-2 md:right-6", "›", "Próxima"],
+            ].map(([dir, side, arrow, label]) => (
+              <button
+                key={dir}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(dir);
+                }}
+                aria-label={label}
+                className={`absolute ${side} top-1/2 -translate-y-1/2 text-4xl text-white/60 hover:text-white px-3 py-6`}
+              >
+                {arrow}
+              </button>
+            ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

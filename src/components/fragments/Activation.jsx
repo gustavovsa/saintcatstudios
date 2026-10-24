@@ -93,8 +93,8 @@ export default function Activation({ originRef, onProgress, onDone }) {
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    const comets = Array.from({ length: 5 }, (_, i) => ({
-      angle: (i / 5) * Math.PI * 2,
+    const comets = Array.from({ length: 8 }, (_, i) => ({
+      angle: (i / 8) * Math.PI * 2,
       radius: 1.1 + Math.random() * 0.5,
       tilt: (Math.random() - 0.5) * 0.5,
       speed: 0.8 + Math.random() * 0.4,
@@ -228,7 +228,7 @@ export default function Activation({ originRef, onProgress, onDone }) {
       for (const [x, y, size] of orbPoints) drawOrb(sharp, x, y, size, 1);
 
       // Luzes correndo em volta com rastro comprido, cada vez mais rápidas
-      const active = Math.min(comets.length, 2 + Math.round(3 * p));
+      const active = Math.min(comets.length, 4 + Math.round(4 * p));
       const omega = (2 + 25 * p * p) * pace;
       comets.slice(0, active).forEach((comet) => {
         const from = comet.angle;

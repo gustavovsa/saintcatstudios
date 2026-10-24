@@ -14,8 +14,11 @@ function loadPdfjs() {
   return pdfjsPromise;
 }
 
-// Todas as páginas do PDF, uma embaixo da outra, na largura disponível
-export default function PdfPages({ url, fallback }) {
+// As páginas do PDF, uma embaixo da outra, dentro de uma caixa com rolagem
+// própria (className define o tamanho dela): quem só quer passar pela
+// página não precisa rolar o prólogo inteiro
+export default function PdfPages({ url, fallback, className }) {
+  const scrollRef = useRef(null);
   const [doc, setDoc] = useState(null);
   const [ratios, setRatios] = useState([]); // altura/largura de cada página
   const [failed, setFailed] = useState(false);
@@ -47,26 +50,26 @@ export default function PdfPages({ url, fallback }) {
 
   if (failed) return fallback;
 
-  if (!doc) {
-    return (
-      <p className="py-24 text-center font-cinzel text-xs tracking-[0.3em] uppercase text-white/50">
-        Carregando…
-      </p>
-    );
-  }
-
   return (
-    <div className="flex flex-col gap-2 md:gap-4">
-      {ratios.map((ratio, i) => (
-        <PdfPage key={i} doc={doc} number={i + 1} ratio={ratio} />
-      ))}
+    <div ref={scrollRef} className={`overflow-y-auto ${className}`}>
+      {doc ? (
+        <div className="flex flex-col gap-2 md:gap-4">
+          {ratios.map((ratio, i) => (
+            <PdfPage key={i} doc={doc} number={i + 1} ratio={ratio} scrollRef={scrollRef} />
+          ))}
+        </div>
+      ) : (
+        <p className="py-24 text-center font-cinzel text-xs tracking-[0.3em] uppercase text-white/50">
+          Carregando…
+        </p>
+      )}
     </div>
   );
 }
 
 // Uma página: só desenha quando chega perto da tela, e redesenha
 // se a largura mudar (girar o celular, redimensionar a janela)
-function PdfPage({ doc, number, ratio }) {
+function PdfPage({ doc, number, ratio, scrollRef }) {
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
   const [near, setNear] = useState(false);
@@ -80,7 +83,7 @@ function PdfPage({ doc, number, ratio }) {
         setNear(true);
         observer.disconnect();
       },
-      { rootMargin: "1000px 0px" },
+      { root: scrollRef.current, rootMargin: "1500px 0px" },
     );
     const resizer = new ResizeObserver(([entry]) => setWidth(Math.round(entry.contentRect.width)));
     observer.observe(box);
@@ -89,7 +92,7 @@ function PdfPage({ doc, number, ratio }) {
       observer.disconnect();
       resizer.disconnect();
     };
-  }, []);
+  }, [scrollRef]);
 
   useEffect(() => {
     if (!near || !width) return;

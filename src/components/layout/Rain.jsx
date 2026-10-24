@@ -5,6 +5,7 @@ const DROPS_PER_PIXEL = 0.00012; // densidade: gotas por pixel da tela
 const WIND = -0.25; // inclinação: negativo = vento da direita
 const COLOR = "162, 196, 224"; // azul gelo (ice) em RGB
 const PARALLAX = 1; // quanto as gotas acompanham o scroll (0 = nada, 1 = presas à página)
+const LAYERS = 4; // camadas de profundidade; cada uma é desenhada de uma vez só
 
 export default function Rain() {
   const canvasRef = useRef(null);
@@ -27,17 +28,16 @@ export default function Rain() {
       const depth = Math.random(); // 0 = longe, 1 = perto
       return {
         depth,
+        layer: Math.min(LAYERS - 1, Math.floor(depth * LAYERS)),
         x: Math.random() * (width + height * Math.abs(WIND)),
         y: randomY ? Math.random() * height : -20,
         length: 10 + depth * 18,
         speed: (8 + depth * 10) * speedFactor,
-        opacity: 0.08 + depth * 0.22,
-        thickness: 0.6 + depth * 0.8,
       };
     };
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = width * dpr;
@@ -55,14 +55,21 @@ export default function Rain() {
       ctx.clearRect(0, 0, width, height);
       ctx.lineCap = "round";
 
-      for (const drop of drops) {
-        ctx.strokeStyle = `rgba(${COLOR}, ${drop.opacity})`;
-        ctx.lineWidth = drop.thickness;
+      // Gotas da mesma camada têm a mesma cor e espessura: um traço só pra todas
+      for (let layer = 0; layer < LAYERS; layer++) {
+        const depth = (layer + 0.5) / LAYERS;
+        ctx.strokeStyle = `rgba(${COLOR}, ${0.08 + depth * 0.22})`;
+        ctx.lineWidth = 0.6 + depth * 0.8;
         ctx.beginPath();
-        ctx.moveTo(drop.x, drop.y);
-        ctx.lineTo(drop.x + WIND * drop.length, drop.y + drop.length);
+        for (const drop of drops) {
+          if (drop.layer !== layer) continue;
+          ctx.moveTo(drop.x, drop.y);
+          ctx.lineTo(drop.x + WIND * drop.length, drop.y + drop.length);
+        }
         ctx.stroke();
+      }
 
+      for (const drop of drops) {
         drop.x += WIND * drop.speed;
         // Paralaxe: gotas mais próximas acompanham mais o scroll
         drop.y += drop.speed - scrollDelta * PARALLAX * (0.3 + drop.depth * 0.7);

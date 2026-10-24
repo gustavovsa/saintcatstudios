@@ -73,9 +73,10 @@ export default function ReadPage() {
             Baixar PDF
           </a>
         </div>
-        {/* Páginas ocupando toda a largura (no celular, de borda a borda) */}
+        {/* Caixa de leitura do tamanho da tela (no celular, de borda a borda) */}
         <PdfPages
           url={asset(prologue.pdfUrl)}
+          className="h-[calc(100svh-7rem)] bg-dark-900 border-y md:border border-dark-700"
           fallback={
             <p className="py-24 px-6 text-center text-white/70">
               Não foi possível mostrar o prólogo aqui.{" "}
